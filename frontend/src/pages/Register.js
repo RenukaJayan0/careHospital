@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom'; // if you're using react-router for navigation
+import { useNavigate } from 'react-router-dom'; // Replace useHistory with useNavigate
 import axios from 'axios';
 
 const Register = () => {
@@ -9,10 +9,11 @@ const Register = () => {
     email: '',
     password: '',
     confirmPassword: '',
+    role: '', // Add role field
   });
-  
+
   const [message, setMessage] = useState('');
-  const history = useHistory(); // Used for navigation if needed
+  const navigate = useNavigate(); // Use navigate instead of history
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,12 +22,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Make an API call to register the user
       const res = await axios.post('http://localhost:5001/api/auth/register', formData);
       if (res.data && res.data.message) {
         setMessage(res.data.message);
-        // You can also redirect to login page after successful registration
-        // history.push('/login');
+        // After successful registration, you can redirect to login page
+        navigate('/login');
       }
     } catch (error) {
       setMessage('Registration failed, please try again.');
@@ -38,42 +38,69 @@ const Register = () => {
       <h1>Register</h1>
       {message && <p>{message}</p>} {/* Display any message */}
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          name="firstName" 
-          placeholder="First Name" 
-          value={formData.firstName} 
-          onChange={handleChange} 
-        />
-        <input 
-          type="text" 
-          name="lastName" 
-          placeholder="Last Name" 
-          value={formData.lastName} 
-          onChange={handleChange} 
-        />
-        <input 
-          type="email" 
-          name="email" 
-          placeholder="Email" 
-          value={formData.email} 
-          onChange={handleChange} 
-        />
-        <input 
-          type="password" 
-          name="password" 
-          placeholder="Password" 
-          value={formData.password} 
-          onChange={handleChange} 
-        />
-        <input 
-          type="password" 
-          name="confirmPassword" 
-          placeholder="Confirm Password" 
-          value={formData.confirmPassword} 
-          onChange={handleChange} 
-        />
-        <button type="submit">Register</button>
+        <div>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }} // Ensure each input is on a new line
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }}
+          />
+        </div>
+        <div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }}
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }}
+          />
+        </div>
+        <div>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            style={{ display: 'block', margin: '10px 0' }}
+          >
+            <option value="">Select Role</option>
+            <option value="doctor">Doctor</option>
+            <option value="patient">Patient</option>
+          </select>
+        </div>
+        <button type="submit" style={{ marginTop: '10px' }}>Register</button>
       </form>
     </div>
   );
