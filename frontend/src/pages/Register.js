@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { register } from '../services/api';
 
-const Register = () => {
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', password: '', role: '' });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await register(formData);
@@ -42,6 +36,5 @@ const Register = () => {
       <button type="submit">Register</button>
     </form>
   );
-};
 
 export default Register;
