@@ -7,17 +7,27 @@ const Register = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await register(formData);
-      alert(res.data.message);
+      // Check if the response is valid before accessing data
+      if (res && res.data) {
+        alert(res.data.message);
+      } else {
+        alert('Unexpected response format.');
+      }
     } catch (error) {
-      alert(error.response.data.error);
+      // More detailed error handling
+      if (error.response) {
+        alert(error.response.data.error || 'An error occurred during registration.');
+      } else {
+        alert('Network error or backend not reachable.');
+      }
     }
   };
-
+  
+ 
   return (
     <form onSubmit={handleSubmit}>
       <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
